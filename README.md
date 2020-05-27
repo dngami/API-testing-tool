@@ -1,5 +1,5 @@
 # API-testing-tool
-This is a tool built using Jmeter to test performance of APIs in lower environment.
+Aim : To build a tool using Jmeter to test performance of APIs in lower environment.
 
 Test API For Flight Scheduling/ Database has been made the functioning of which is described below
 
