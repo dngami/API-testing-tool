@@ -13,7 +13,7 @@ Class : Flight
 5. Arrival Time - ArrTime
 6. Distance - Distance
 7. Price - Price
-8. Type - International/Domestic] - type
+8. Type - [International/Domestic] - type
 
 To connect on postman: http://localhost:8080/FlightApi/webapi is to be used as the base path.
 
