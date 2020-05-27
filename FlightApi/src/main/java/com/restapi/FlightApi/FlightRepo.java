@@ -61,8 +61,8 @@ public class FlightRepo {
 				a.setArrApt(rs.getString(3));
 				a.setDeptTime(rs.getString(4));
 				a.setArrTime(rs.getString(5));
-				a.setDistance(rs.getInt(6));
-				a.setType(rs.getString(7));
+				a.setPrice(rs.getInt(7));
+				a.setType(rs.getString(8));
 			}
 		}
 		catch(Exception e){
@@ -73,7 +73,7 @@ public class FlightRepo {
 	}
 
 	public List<Flight> FlightsByDestination(String departure, String arrival) {
-		String sql= "select * from flights where DeptApt=" + departure + " and ArrApt=" + arrival;
+		String sql= "select * from flights where DeptApt='" + departure + "' and ArrApt='" + arrival +"'";
 		List<Flight> flights=new ArrayList<Flight>();
 		try{
 			Connection con = DriverManager.getConnection(url,username,password);
@@ -87,7 +87,8 @@ public class FlightRepo {
 				f.setDeptTime(rs.getString(4));
 				f.setArrTime(rs.getString(5));
 				f.setDistance(rs.getInt(6));
-				f.setType(rs.getString(7));
+				f.setPrice(rs.getInt(7));
+				f.setType(rs.getString(8));
 				flights.add(f);
 			}
 		}
@@ -100,7 +101,7 @@ public class FlightRepo {
 	}
 
 	public List<Flight> FlightsDepartingFrom(String airport) {
-		String sql= "select * from flights where DeptApt=" + airport;
+		String sql= "select * from flights where DeptApt='" + airport +"'";
 		List<Flight> flights=new ArrayList<Flight>();
 		try{
 			Connection con = DriverManager.getConnection(url,username,password);
@@ -114,7 +115,8 @@ public class FlightRepo {
 				f.setDeptTime(rs.getString(4));
 				f.setArrTime(rs.getString(5));
 				f.setDistance(rs.getInt(6));
-				f.setType(rs.getString(7));
+				f.setPrice(rs.getInt(7));
+				f.setType(rs.getString(8));
 				flights.add(f);
 			}
 		}
@@ -129,7 +131,7 @@ public class FlightRepo {
 	public List<Flight> getFlightByType(String type){
 
 		List<Flight> flights= new ArrayList<>();
-		String sql = "select * from flights where type=" + type;
+		String sql = "select * from flights where type='" + type+"'";
 		try{		
 			Connection con = DriverManager.getConnection(url,username,password);
 			Statement st=con.createStatement();
@@ -142,7 +144,8 @@ public class FlightRepo {
 				a.setDeptTime(rs.getString(4));
 				a.setArrTime(rs.getString(5));
 				a.setDistance(rs.getInt(6));
-				a.setType(rs.getString(7));
+				a.setPrice(rs.getInt(7));
+				a.setType(rs.getString(8));
 				
 				flights.add(a);
 			}
@@ -155,7 +158,7 @@ public class FlightRepo {
 	}
 	
 	public List<Flight> FlightsArrivingAt(String airport) {
-		String sql= "select * from flights where ArrApt=" + airport;
+		String sql= "select * from flights where ArrApt='" + airport +"'";
 		List<Flight> flights=new ArrayList<Flight>();
 		try{
 			Connection con = DriverManager.getConnection(url,username,password);
@@ -169,7 +172,8 @@ public class FlightRepo {
 				f.setDeptTime(rs.getString(4));
 				f.setArrTime(rs.getString(5));
 				f.setDistance(rs.getInt(6));
-				f.setType(rs.getString(7));
+				f.setPrice(rs.getInt(7));
+				f.setType(rs.getString(8));
 				flights.add(f);
 			}
 		}
@@ -185,7 +189,7 @@ public class FlightRepo {
 	public Flight getflight(int id) 
 	{
 		Flight a = new Flight();
-		String sql="select * from flights where id="+ id;
+		String sql="select * from flights where id='"+ id + "'";
 		try 
 		{
 			

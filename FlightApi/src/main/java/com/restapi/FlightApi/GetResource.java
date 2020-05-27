@@ -21,7 +21,7 @@ public class GetResource {
 	}
 	
     @GET
-    @Path("/flightInfo/departure/{departure}/arrival/{arrival}")
+    @Path("/departure/{departure}/arrival/{arrival}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Flight> getIt(@PathParam("departure") String departure,@PathParam("arrival") String arrival) {
     	return repo.FlightsByDestination(departure,arrival);
@@ -35,14 +35,14 @@ public class GetResource {
 	}
     
     @GET
-    @Path("/flightInfo/depart/{airport}")
+    @Path("/depart/{airport}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Flight> getIt(@PathParam("airport") String airport) {
     	return repo.FlightsDepartingFrom(airport);
     }
     
     @GET
-    @Path("/flightInfo/arrive/{airport}")
+    @Path("/arrive/{airport}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Flight> getIt1(@PathParam("airport") String airport) {
     	return repo.FlightsArrivingAt(airport);
