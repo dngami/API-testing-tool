@@ -101,7 +101,7 @@ public class FlightRepo {
 	}
 
 	public List<Flight> FlightsDepartingFrom(String airport) {
-		String sql= "select * from flights where DeptApt='" + airport +"'";
+		String sql= "select * from flights where DeptApt='"+airport+"'";
 		List<Flight> flights=new ArrayList<Flight>();
 		try{
 			Connection con = DriverManager.getConnection(url,username,password);
@@ -131,7 +131,7 @@ public class FlightRepo {
 	public List<Flight> getFlightByType(String type){
 
 		List<Flight> flights= new ArrayList<>();
-		String sql = "select * from flights where type='" + type+"'";
+		String sql = "select * from flights where type='"+type+"'";
 		try{		
 			Connection con = DriverManager.getConnection(url,username,password);
 			Statement st=con.createStatement();
@@ -158,7 +158,7 @@ public class FlightRepo {
 	}
 	
 	public List<Flight> FlightsArrivingAt(String airport) {
-		String sql= "select * from flights where ArrApt='" + airport +"'";
+		String sql= "select * from flights where ArrApt='"+airport+"'";
 		List<Flight> flights=new ArrayList<Flight>();
 		try{
 			Connection con = DriverManager.getConnection(url,username,password);
@@ -189,7 +189,7 @@ public class FlightRepo {
 	public Flight getflight(int id) 
 	{
 		Flight a = new Flight();
-		String sql="select * from flights where id='"+ id + "'";
+		String sql="select * from flights where id='"+ id+"'";
 		try 
 		{
 			
