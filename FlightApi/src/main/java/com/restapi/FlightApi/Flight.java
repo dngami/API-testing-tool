@@ -61,6 +61,4 @@ public class Flight
 	public void setType(String type) {
 		this.type = type;
 	}
-	
-	
 }
