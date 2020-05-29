@@ -11,9 +11,9 @@ public class FlightRepo {
 	public FlightRepo()
 	{
 		try{
-			url = "jdbc:mysql://ucwjr6uj9unt4c2i:kXKKOa24te8RTOyfm0mf@bntmgq2mioer8nurvvm0-mysql.services.clever-cloud.com:3306/bntmgq2mioer8nurvvm0";
-		    username = "ucwjr6uj9unt4c2i";
-			password = "kXKKOa24te8RTOyfm0mf";
+			url = "jdbc:mysql://restdb.c7saadadrte4.ap-south-1.rds.amazonaws.com:3306/restdb";
+		    username = "root";
+			password = "iitguwahati";
 			String driver = "com.mysql.cj.jdbc.Driver";
 			Class.forName(driver);
 		}
@@ -45,6 +45,66 @@ public class FlightRepo {
 			System.out.println(e);
 		}
 		
+	}
+	
+	public void addlist(List<Flight> a1) 
+	{
+		String sql = "insert into flights values(?,?,?,?,?,?,?,?)";
+		try
+		{
+			
+			Connection con = DriverManager.getConnection(url,username,password);
+			PreparedStatement st = con.prepareStatement(sql);
+			for(Flight a: a1 )
+			{
+				st.setInt(1, a.getId());
+				st.setString(2, a.getDeptApt());
+				st.setString(3, a.getArrApt());
+				st.setString(4, a.getDeptTime());
+				st.setString(5, a.getArrTime());
+				st.setInt(6, a.getDistance());
+				st.setInt(7, a.getPrice());
+				st.setString(8, a.getType());
+				st.executeUpdate();
+			}
+			st.close();
+			con.close();
+		}catch(Exception e)
+		{
+			System.out.println(e);
+		}
+	}
+	
+	public List<Flight> getlist() 
+	{
+		List<Flight> fl = new ArrayList<>();
+		String sql = "select * from flights";
+		try 
+		{
+			Connection con = DriverManager.getConnection(url, username, password);
+			Statement st= con.createStatement();
+			ResultSet rs= st.executeQuery(sql);
+			while(rs.next()) 
+			{
+				Flight a =new Flight();
+				a.setId(rs.getInt(1));
+				a.setDeptApt(rs.getString(2));
+				a.setArrApt(rs.getString(3));
+				a.setDeptTime(rs.getString(4));
+				a.setArrTime(rs.getString(5));
+				a.setDistance(rs.getInt(6));
+				a.setPrice(rs.getInt(7));
+				a.setType(rs.getString(8));
+				fl.add(a);
+			}
+			st.close();
+			con.close();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		return fl;
 	}
 	
 	
@@ -128,6 +188,35 @@ public class FlightRepo {
 		
 	}
 	
+	public List<Flight> FlightsArrivingAt(String airport) {
+		String sql= "select * from flights where ArrApt='"+airport+"'";
+		List<Flight> flights=new ArrayList<Flight>();
+		try{
+			Connection con = DriverManager.getConnection(url,username,password);
+			Statement st=con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while(rs.next()){
+				Flight f = new Flight();
+				f.setId(rs.getInt(1));
+				f.setDeptApt(rs.getString(2));
+				f.setArrApt(rs.getString(3));
+				f.setDeptTime(rs.getString(4));
+				f.setArrTime(rs.getString(5));
+				f.setDistance(rs.getInt(6));
+				f.setPrice(rs.getInt(7));
+				f.setType(rs.getString(8));
+				flights.add(f);
+			}
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
+		
+		return flights;
+		
+	}
+	
+	
 	public List<Flight> getFlightByType(String type){
 
 		List<Flight> flights= new ArrayList<>();
@@ -157,33 +246,6 @@ public class FlightRepo {
 		
 	}
 	
-	public List<Flight> FlightsArrivingAt(String airport) {
-		String sql= "select * from flights where ArrApt='"+airport+"'";
-		List<Flight> flights=new ArrayList<Flight>();
-		try{
-			Connection con = DriverManager.getConnection(url,username,password);
-			Statement st=con.createStatement();
-			ResultSet rs = st.executeQuery(sql);
-			while(rs.next()){
-				Flight f = new Flight();
-				f.setId(rs.getInt(1));
-				f.setDeptApt(rs.getString(2));
-				f.setArrApt(rs.getString(3));
-				f.setDeptTime(rs.getString(4));
-				f.setArrTime(rs.getString(5));
-				f.setDistance(rs.getInt(6));
-				f.setPrice(rs.getInt(7));
-				f.setType(rs.getString(8));
-				flights.add(f);
-			}
-		}
-		catch(Exception e){
-			System.out.println(e);
-		}
-		
-		return flights;
-		
-	}
 	
 	
 	public Flight getflight(int id) 

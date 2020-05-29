@@ -11,6 +11,13 @@ import jakarta.ws.rs.core.MediaType;
 @Path("flightInfo")
 public class GetResource {
 	FlightRepo repo = new FlightRepo();
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Flight> getList()
+	{
+		return repo.getlist();
+	}
 
 	@GET
 	@Path("{FlightId}")
