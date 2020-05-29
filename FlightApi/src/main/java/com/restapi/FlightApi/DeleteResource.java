@@ -12,7 +12,7 @@ public class DeleteResource {
 	@Path("byid/{id}")
 	public Flight removeFlight(@PathParam("id") int id)
 	{
-		Flight a = fr.getFlightById(id);
+		Flight a = fr.getflight(id);
 		if(a.getId()!=0)
 		{
 			fr.delete(id);

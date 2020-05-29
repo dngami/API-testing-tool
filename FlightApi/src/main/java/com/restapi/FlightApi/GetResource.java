@@ -22,9 +22,9 @@ public class GetResource {
 	@GET
 	@Path("{FlightId}")
 	@Produces(MediaType.APPLICATION_JSON)
-    public Flight getFlight(@PathParam("FlightId") int FlightId)
+    public Flight getflight(@PathParam("FlightId") int FlightId)
 	{
-		return repo.getFlightById(FlightId);
+		return repo.getflight(FlightId);
 	}
 	
     @GET

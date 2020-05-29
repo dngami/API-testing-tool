@@ -108,27 +108,33 @@ public class FlightRepo {
 	}
 	
 	
-	public Flight getFlightById(int id){
-		String sql= "select * from flights where id=" + id;
-		Flight a=new Flight();
-		try{		
+	public Flight getflight(int id) 
+	{
+		Flight a = new Flight();
+		String sql="select * from flights where id='"+ id+"'";
+		try 
+		{
+			
 			Connection con = DriverManager.getConnection(url,username,password);
-			Statement st=con.createStatement();
-			ResultSet rs = st.executeQuery(sql);
-			if(rs.next()){
+			Statement st = con.createStatement();
+			ResultSet rs= st.executeQuery(sql);
+			if(rs.next()) {
 				a.setId(rs.getInt(1));
 				a.setDeptApt(rs.getString(2));
 				a.setArrApt(rs.getString(3));
 				a.setDeptTime(rs.getString(4));
 				a.setArrTime(rs.getString(5));
+				a.setDistance(rs.getInt(6));
 				a.setPrice(rs.getInt(7));
 				a.setType(rs.getString(8));
 			}
+			st.close();
+			con.close();
 		}
-		catch(Exception e){
+		catch (Exception e)
+		{
 			System.out.println(e);
 		}
-		
 		return a;
 	}
 
@@ -248,35 +254,7 @@ public class FlightRepo {
 	
 	
 	
-	public Flight getflight(int id) 
-	{
-		Flight a = new Flight();
-		String sql="select * from flights where id='"+ id+"'";
-		try 
-		{
-			
-			Connection con = DriverManager.getConnection(url,username,password);
-			Statement st = con.createStatement();
-			ResultSet rs= st.executeQuery(sql);
-			if(rs.next()) {
-				a.setId(rs.getInt(1));
-				a.setDeptApt(rs.getString(2));
-				a.setArrApt(rs.getString(3));
-				a.setDeptTime(rs.getString(4));
-				a.setArrTime(rs.getString(5));
-				a.setDistance(rs.getInt(6));
-				a.setPrice(rs.getInt(7));
-				a.setType(rs.getString(8));
-			}
-			st.close();
-			con.close();
-		}
-		catch (Exception e)
-		{
-			System.out.println(e);
-		}
-		return a;
-	}
+
 
 	public void arrTimeupdate(int id, String t)
 	{
