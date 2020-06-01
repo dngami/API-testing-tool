@@ -1,11 +1,11 @@
 # API-testing-tool
 Aim : To build a tool using Jmeter to test performance of APIs in lower environment.
 
-The following RESTful APIs has been developed for input to our Jmeter based testing tool. Since APIs are hosted on AWS RDS and docker image of tool is available on docker hub(Details in footer), testings could also be done remotely.
+The following RESTful APIs has been developed for input to our Jmeter based testing tool. Since APIs are hosted on AWS RDS and docker image of tool is available on docker hub(Details in footer), testings could also be done remotely. All this APIs are also tested using Postman using this collection : https://www.getpostman.com/collections/482468e327bd012f4aac and are working correctly.
 
-To connect on postman: http://apitesting.ap-south-1.elasticbeanstalk.com/webapi/ is to be used as the base path followed by the any of the following request method path.
+For connection: http://apitesting.ap-south-1.elasticbeanstalk.com/webapi/ is to be used as the BASE PATH followed by the any of the following request method path.
 
-GET Methods: “{}” represents the input variable in the path. (Airports have been named by their three letter codes. For eg. DEL, MUM etc.)
+1. GET Methods: “{}” represents the input variable in the path. (Airports have been named by their three letter codes. For eg. DEL, MUM etc.)
 > List all flights: /flightInfo
 
 > Search by Flight id -   /flightInfo/{FlightId}
@@ -20,6 +20,8 @@ GET Methods: “{}” represents the input variable in the path. (Airports have 
 
   Sample http requests:
   GET methods:
+  > http://apitesting.ap-south-1.elasticbeanstalk.com/webapi/flightInfo
+  
   > http://apitesting.ap-south-1.elasticbeanstalk.com/webapi/flightInfo/airport/D
 
   > http://apitesting.ap-south-1.elasticbeanstalk.com/webapi/flightInfo/1
@@ -27,7 +29,7 @@ GET Methods: “{}” represents the input variable in the path. (Airports have 
   > http://apitesting.ap-south-1.elasticbeanstalk.com/webapi/flightInfo/departure/MUM/arrival/DEL
 
 
-POST Method: 
+2. POST Method: 
 > Add a new Flight-   /addFlight/
 
 NOTE: Duplicate flight Ids are not allowed. I.e. each flight requires a unique id.
@@ -35,14 +37,17 @@ NOTE: Duplicate flight Ids are not allowed. I.e. each flight requires a unique i
 PUT Methods: The flight id of the required flight is fetched so that its particulars can be edited.
 “{}” represents the input variable in the path. 
 
-> Edit Arrival time                               /edit/{id}/arr/{time}
+> Edit Arrival time                        /edit/{id}/arr/{time}
+
 > Edit Departure time                      /edit/{id}/dept/{time} 
-> Edit Arrival destination/Airport            /edit/{id}/arrapt/{Airport}
-> Edit Departure destination/Airport     /edit/{id}/arrapt/{Airport}
-> Edit Price                                    /edit/{id}/price/{price}
 
+> Edit Arrival destination/Airport         /edit/{id}/arrapt/{Airport}
 
-DELETE Method: The required flight fetched by its Id is deleted.	
+> Edit Departure destination/Airport       /edit/{id}/arrapt/{Airport}
+
+> Edit Price                               /edit/{id}/price/{price}
+
+3. DELETE Method: The required flight fetched by its Id is deleted.	
 > By flight ID -  /delflight/byid/{id}   
 
 
@@ -57,7 +62,3 @@ How to create Docker image and run it:
 
  While using docker, since the API will use localhost, please use localhost:8080/FlightApi/webapi/ as the base url.
 For ex. localhost:8080/FlightApi/webapi/flightInfo/1 for a sample GET request.
-
-
-
-
