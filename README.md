@@ -65,7 +65,9 @@ Table name: flights
 Sample http requests:
 GET methods:
 > http://apitesting.ap-south-1.elasticbeanstalk.com/webapi/flightInfo/airport/D
+
 > http://apitesting.ap-south-1.elasticbeanstalk.com/webapi/flightInfo/1
+
 > http://apitesting.ap-south-1.elasticbeanstalk.com/webapi/flightInfo/departure/MUM/arrival/DEL
 
 
