@@ -1,25 +1,11 @@
 # API-testing-tool
 Aim : To build a tool using Jmeter to test performance of APIs in lower environment.
 
-Test API For Flight Scheduling/ Database has been made the functioning of which is described below
+The following RESTful API has been developed for input to our Jmeter based testing tool. Since APIs are hosted on AWS RDS and docker container of tool is available on docker hub(Details in footer), testings could be done remotely.
 
-The following RESTful API has been developed in Jersey.
+To connect on postman: http://apitesting.ap-south-1.elasticbeanstalk.com/webapi/ is to be used as the base path followed by the any of the following request method path.
 
-Class : Flight
-1. Id   - id
-2. Departure Airport - DeptApt 
-3. Arrival Airport - ArrApt
-4. Departure Time - DeptTime
-5. Arrival Time - ArrTime
-6. Distance - Distance
-7. Price - Price
-8. Type - [International/Domestic] - type
-
-To connect on postman: http://apitesting.ap-south-1.elasticbeanstalk.com/webapi/ is to be used as the base path.
-
-Airports have been named by their three letter codes. For eg. DEL, MUM etc.
-
-GET Methods: “{}” represents the input variable in the path. 
+GET Methods: “{}” represents the input variable in the path. (Airports have been named by their three letter codes. For eg. DEL, MUM etc.)
 > List all flights: /flightInfo
 
 > Search by Flight id -   /flightInfo/{FlightId}
@@ -63,12 +49,6 @@ DELETE Method: The required flight fetched by its Id is deleted.
 Following classes were used so as to handle the requests and deal with the MySQL database. 
 FlightRepo: deals with the database
 Get/Put/Post/DeleteResource:  handles all the HTTP requests.  
-
-
-MySQL Database: 
-Hosted on:  AWS RDS
-Database name: restDB
-Table name: flights
 
 
 How to create Docker image and run it:
