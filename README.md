@@ -70,4 +70,13 @@ GET methods:
 
 > http://apitesting.ap-south-1.elasticbeanstalk.com/webapi/flightInfo/departure/MUM/arrival/DEL
 
+How to create Docker image and run it:
+>docker pull sarthvitekar/myflightapi
+>docker container run -it --publish 8080:8080 sarthvitekar/myflightapi
+
+ While using docker, since the API will use localhost, please use localhost:8080/FlightApi/webapi/ as the base url.
+For ex. localhost:8080/FlightApi/webapi/flightInfo/1 for a sample GET request.
+
+
+
 
