@@ -32,6 +32,15 @@ GET Methods: “{}” represents the input variable in the path.
 
 > All Flights on a Particular Airport (returns a List of flights arriving on a particular airport)- /flightInfo/{airport}/arrival/{arrival}
 
+  Sample http requests:
+  GET methods:
+  > http://apitesting.ap-south-1.elasticbeanstalk.com/webapi/flightInfo/airport/D
+
+  > http://apitesting.ap-south-1.elasticbeanstalk.com/webapi/flightInfo/1
+
+  > http://apitesting.ap-south-1.elasticbeanstalk.com/webapi/flightInfo/departure/MUM/arrival/DEL
+
+
 POST Method: 
 > Add a new Flight-   /addFlight/
 
@@ -61,14 +70,6 @@ Hosted on:  AWS RDS
 Database name: restDB
 Table name: flights
 
-
-Sample http requests:
-GET methods:
-> http://apitesting.ap-south-1.elasticbeanstalk.com/webapi/flightInfo/airport/D
-
-> http://apitesting.ap-south-1.elasticbeanstalk.com/webapi/flightInfo/1
-
-> http://apitesting.ap-south-1.elasticbeanstalk.com/webapi/flightInfo/departure/MUM/arrival/DEL
 
 How to create Docker image and run it:
 >docker pull sarthvitekar/myflightapi
