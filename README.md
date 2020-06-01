@@ -1,7 +1,7 @@
 # API-testing-tool
 Aim : To build a tool using Jmeter to test performance of APIs in lower environment.
 
-The following RESTful API has been developed for input to our Jmeter based testing tool. Since APIs are hosted on AWS RDS and docker container of tool is available on docker hub(Details in footer), testings could be done remotely.
+The following RESTful APIs has been developed for input to our Jmeter based testing tool. Since APIs are hosted on AWS RDS and docker image of tool is available on docker hub(Details in footer), testings could also be done remotely.
 
 To connect on postman: http://apitesting.ap-south-1.elasticbeanstalk.com/webapi/ is to be used as the base path followed by the any of the following request method path.
 
