@@ -1,20 +1,36 @@
 package com.restapi.FlightApi;
 
 import java.util.*;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.*;
+
+
 
 public class FlightRepo {
 	String url;
 	String username;
 	String password;
 	
+	public static Properties loadFile() throws Exception {
+		Properties prop = new Properties();
+		InputStream input = new FileInputStream("jdbc.properties");
+		
+		prop.load(input);
+		input.close();
+		return prop;
+	}
+	
 	public FlightRepo()
 	{
 		try{
-			url = "jdbc:mysql://restdb.c7saadadrte4.ap-south-1.rds.amazonaws.com:3306/restdb";
-		    username = "root";
-			password = "iitguwahati";
-			String driver = "com.mysql.cj.jdbc.Driver";
+			
+			Properties prop = loadFile();
+		
+			url = prop.getProperty("MYSQLJDBC.url");
+		    username = prop.getProperty("MYSQLJDBC.username");
+			password = prop.getProperty("MYSQLJDBC.password");
+			String driver = prop.getProperty("MYSQLJDBC.driver");
 			Class.forName(driver);
 		}
 		catch(Exception e)
