@@ -1,6 +1,9 @@
 package com.restapi.FlightApi;
 
 import java.util.*;
+
+import com.restapi.FlightApi.Exception.DataNotFoundException;
+
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.*;
@@ -39,6 +42,8 @@ public class FlightRepo {
 		}
 	}	
 	public void create(Flight a1) {
+		if (a1.getId()==0||a1.getDeptApt()==null||a1.getArrApt()==null||a1.getDeptTime()==null||a1.getArrTime()==null||a1.getDistance()==0||a1.getPrice()==0||a1.getType()==null)
+			throw new DataNotFoundException("Please provide all the parameters for the flight");
 		String sql = "insert into flights values(?,?,?,?,?,?,?,?)";
 		try
 		{
@@ -65,6 +70,11 @@ public class FlightRepo {
 	
 	public void addlist(List<Flight> a1) 
 	{
+		for (Flight a:a1)
+		{
+			if (a.getId()==0||a.getDeptApt()==null||a.getArrApt()==null||a.getDeptTime()==null||a.getArrTime()==null||a.getDistance()==0||a.getPrice()==0||a.getType()==null)
+				throw new DataNotFoundException("Please provide all the parameters for every flight");
+		}
 		String sql = "insert into flights values(?,?,?,?,?,?,?,?)";
 		try
 		{
@@ -95,6 +105,7 @@ public class FlightRepo {
 	{
 		List<Flight> fl = new ArrayList<>();
 		String sql = "select * from flights";
+		int count=0;
 		try 
 		{
 			Connection con = DriverManager.getConnection(url, username, password);
@@ -111,6 +122,7 @@ public class FlightRepo {
 				a.setDistance(rs.getInt(6));
 				a.setPrice(rs.getInt(7));
 				a.setType(rs.getString(8));
+				if (a.getDistance()!=0) count++; 
 				fl.add(a);
 			}
 			st.close();
@@ -120,7 +132,11 @@ public class FlightRepo {
 		{
 			System.out.println(e);
 		}
-		return fl;
+		if (count==0)
+		{
+			throw new DataNotFoundException("No flights are available");
+		}
+		else return fl;
 	}
 	
 	
@@ -151,12 +167,17 @@ public class FlightRepo {
 		{
 			System.out.println(e);
 		}
-		return a;
+		if (a.getPrice()==0)
+		{
+			throw new DataNotFoundException("No flight exists by this id");
+		}
+		 return a;
 	}
 
 	public List<Flight> FlightsByDestination(String departure, String arrival) {
 		String sql= "select * from flights where DeptApt='" + departure + "' and ArrApt='" + arrival +"'";
 		List<Flight> flights=new ArrayList<Flight>();
+		int count =0;
 		try{
 			Connection con = DriverManager.getConnection(url,username,password);
 			Statement st=con.createStatement();
@@ -171,20 +192,26 @@ public class FlightRepo {
 				f.setDistance(rs.getInt(6));
 				f.setPrice(rs.getInt(7));
 				f.setType(rs.getString(8));
+				if (f.getDistance()!=0) count++;
 				flights.add(f);
+				
 			}
 		}
 		catch(Exception e){
 			System.out.println(e);
 		}
-		
-		return flights;
+		if (count==0)
+		{
+			throw new DataNotFoundException("No flights are available");
+		}
+		else return flights;
 		
 	}
 
 	public List<Flight> FlightsDepartingFrom(String airport) {
 		String sql= "select * from flights where DeptApt='"+airport+"'";
 		List<Flight> flights=new ArrayList<Flight>();
+		int count=0;
 		try{
 			Connection con = DriverManager.getConnection(url,username,password);
 			Statement st=con.createStatement();
@@ -199,20 +226,25 @@ public class FlightRepo {
 				f.setDistance(rs.getInt(6));
 				f.setPrice(rs.getInt(7));
 				f.setType(rs.getString(8));
+				if (f.getDistance()!=0) count++;
 				flights.add(f);
 			}
 		}
 		catch(Exception e){
 			System.out.println(e);
 		}
-		
-		return flights;
+		if (count==0)
+		{
+			throw new DataNotFoundException("No departures from the given airport");
+		}
+		else return flights;
 		
 	}
 	
 	public List<Flight> FlightsArrivingAt(String airport) {
 		String sql= "select * from flights where ArrApt='"+airport+"'";
 		List<Flight> flights=new ArrayList<Flight>();
+		int count=0;
 		try{
 			Connection con = DriverManager.getConnection(url,username,password);
 			Statement st=con.createStatement();
@@ -227,14 +259,16 @@ public class FlightRepo {
 				f.setDistance(rs.getInt(6));
 				f.setPrice(rs.getInt(7));
 				f.setType(rs.getString(8));
+				if (f.getDistance()!=0) count++; 
 				flights.add(f);
 			}
 		}
 		catch(Exception e){
 			System.out.println(e);
 		}
-		
-		return flights;
+		if (count==0)
+			throw new DataNotFoundException("No arrivals at the given airport");
+		else return flights;
 		
 	}
 	
@@ -243,6 +277,7 @@ public class FlightRepo {
 
 		List<Flight> flights= new ArrayList<>();
 		String sql = "select * from flights where type='"+type+"'";
+		int count=0;
 		try{		
 			Connection con = DriverManager.getConnection(url,username,password);
 			Statement st=con.createStatement();
@@ -257,14 +292,16 @@ public class FlightRepo {
 				a.setDistance(rs.getInt(6));
 				a.setPrice(rs.getInt(7));
 				a.setType(rs.getString(8));
-				
+				if (a.getDistance()==0) count++;
 				flights.add(a);
 			}
 		}
 		catch(Exception e){
 			System.out.println(e);
 		}
-		return flights;
+		if (count==0) 
+			throw new DataNotFoundException("No flights belong to the given type");
+		else return flights;
 		
 	}
 	
