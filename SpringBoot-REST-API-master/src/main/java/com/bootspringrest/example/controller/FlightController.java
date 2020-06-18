@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bootspringrest.Exception.APIrequestException;
 //import com.bootspringrest.example.dao.EmployeeDAO;
 import com.bootspringrest.example.dao.FlightDAO;
 import com.bootspringrest.example.model.Flights;
@@ -34,13 +35,17 @@ public class FlightController {
 	@PostMapping("/addFlight")
 	public Flights createFlight(@Valid @RequestBody Flights f){
 		log.info("Someone tried to add a new flight to the database!");
-		Flights temp= flightdao.save(f);
+		Flights temp=flightdao.findOne(f.getId());
+		if (temp!=null) 
+			throw new RuntimeException("Flight with the given id already exists, give a new id");
+		temp= flightdao.save(f);
 		if (temp.getArrApt()==null||temp.getDeptApt()==null||temp.getArrTime()==null||temp.getDeptTime()==null||temp.getPrice()==0||temp.getDistance()==0||temp.getType()==null)
 		{
 			log.error("Paramters not provided properly, which lead to error!");
 			flightdao.deletebyID(f.getId());
 			throw new RuntimeException("please provide all the parameters properly");
 		}
+		// As ID is the primary key, the info is added to the logfile whenever a new flight is added so as to avoid same ID errors
 		log.info("A new flight with id "+f.getId()+" has been added successfully!");
 		return temp;
 	}
@@ -50,7 +55,10 @@ public class FlightController {
 		log.info("Someone tried to add a list of new flights to the database!");
 		for (Flights f:fl)
 		{
-			 Flights temp=flightdao.save(f);
+			 Flights temp = flightdao.findOne(f.getId());
+			 if (temp!=null)
+				 throw new RuntimeException("Flight with id="+f.getId()+" already exists, give a new id");
+			 temp=flightdao.save(f);
 			 if (temp.getArrApt()==null||temp.getDeptApt()==null||temp.getArrTime()==null||temp.getDeptTime()==null||temp.getPrice()==0||temp.getDistance()==0||temp.getType()==null)
 				{
 				 	log.error("Parameters for the flight with id "+f.getId()+" are not provided properly");
@@ -59,7 +67,7 @@ public class FlightController {
 				}	
 
 		}
-		
+		log.info("The given flights are successfully added");
 		return "The flights are added successfully";
 	}
 	@GetMapping("/flightInfo")
