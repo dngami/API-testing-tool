@@ -61,16 +61,16 @@ public class JMeterFromScratch {
                 JMeterUtils.loadJMeterProperties(jmeterProperties.getPath());
                 JMeterUtils.initLogging();// you can comment this line out to see extra log messages of i.e. DEBUG level
                 JMeterUtils.initLocale();
-                
+
                 // Set directory for HTML report
-                String repDir =  "HTMLReport";               
+                String repDir =  "HTMLReport";
                 JMeterUtils.setProperty("jmeter.reportgenerator.exporter.html.property.output_dir",repDir);
 
 
                 // JMeter Test Plan, basically JOrphan HashTree
                 ListedHashTree testPlanTree = new ListedHashTree();
 
-                
+
                 // Test Plan
                 TestPlan testPlan = new TestPlan("Create JMeter Script From Java Code");
                 testPlan.setProperty(TestElement.TEST_CLASS, TestPlan.class.getName());
@@ -103,9 +103,9 @@ public class JMeterFromScratch {
                 pauseAction.setProperty(TestElement.TEST_CLASS, TestAction.class.getName());
                 pauseAction.setProperty(TestElement.GUI_CLASS, TestActionGui.class.getName());
 
-                
+
                 //Header Manager
-                
+
                 HeaderManager mngr1= new HeaderManager();
                 org.apache.jmeter.protocol.http.control.Header h2= new org.apache.jmeter.protocol.http.control.Header("Accept", "application/json");
                 org.apache.jmeter.protocol.http.control.Header h1 = new org.apache.jmeter.protocol.http.control.Header("Content-Type", "application/json");
@@ -114,8 +114,8 @@ public class JMeterFromScratch {
                 mngr1.setName("Header manager 1");
                 mngr1.setProperty(TestElement.TEST_CLASS, HeaderManager.class.getName());
                 mngr1.setProperty(TestElement.GUI_CLASS, HeaderPanel.class.getName());
-                
-                
+
+
                 HeaderManager mngr2= new HeaderManager();
                 org.apache.jmeter.protocol.http.control.Header h3 = new org.apache.jmeter.protocol.http.control.Header("Accept", "text/plain");
                 mngr2.add(h3);
@@ -123,24 +123,24 @@ public class JMeterFromScratch {
                 mngr2.setName("Header Manager 2");
                 mngr2.setProperty(TestElement.TEST_CLASS, HeaderManager.class.getName());
                 mngr2.setProperty(TestElement.GUI_CLASS, HeaderPanel.class.getName());
-                
+
                 Inputs base= new Inputs();
                 GetInput allget = new GetInput();
                 PostInput allpost = new PostInput();
                 PutInput allput =new PutInput();
                 DelInput alldel = new DelInput();
-               
+
                 //Welcome Message
                 System.out.println("\nWelcome to API Performance Testing Tool  :)) ");
-                
+
                 //Taking User Input
                 System.out.println("\nChoose one Input Method :");
                 System.out.println("Press 1 for Input through File");
                 System.out.println("Press 2 for Input through Console");
                 Scanner sc= new Scanner(System.in);
                 int n=sc.nextInt();
-                
-                
+
+
                 int total;
                 switch (n)
                 {
@@ -148,15 +148,15 @@ public class JMeterFromScratch {
                 	FileIn fl= new FileIn();
                     Allsource req=new Allsource();
                     req = fl.takein();
-                    
+
                     total = req.getGetcount() + req.getPostcount() + req.getPutcount() + req.getDelcount() ;
-                    if(total ==0) 
+                    if(total ==0)
                     {
                     	System.out.println("\nNo HTTP Requests.");
                     	System.out.println("Exiting Application.....\n");
                     	System.exit(0);
                     }
-          
+
                  // Loop Controller
                     LoopController loopController = new LoopController();
                     loopController.setLoops(req.getLoop());
@@ -165,8 +165,8 @@ public class JMeterFromScratch {
                     loopController.setProperty(TestElement.TEST_CLASS, LoopController.class.getName());
                     loopController.setProperty(TestElement.GUI_CLASS, LoopControlPanel.class.getName());
                     loopController.initialize();
-                    
-                    
+
+
                     // Thread Group
                     ThreadGroup threadGroup = new ThreadGroup();
                     threadGroup.setName("Example Thread Group");
@@ -176,7 +176,7 @@ public class JMeterFromScratch {
                     threadGroup.setProperty(TestElement.TEST_CLASS, ThreadGroup.class.getName());
                     threadGroup.setProperty(TestElement.GUI_CLASS, ThreadGroupGui.class.getName());
 
-                   
+
                  // Construct Test Plan from previously initialized elements
 
                     // 1st method to initialize subtrees
@@ -186,13 +186,13 @@ public class JMeterFromScratch {
                     testPlanTree.add(testPlan);
                     testPlanTree.add(testPlan, randomVariableConfig);
                     //HashTree del= testPlanTree.add(Sampler7,mngr1);
-                    
+
                     HashTree threadgrp =  testPlanTree.add(testPlan,threadGroup);
-                    
-                    
+
+
                     //Creating All GET HTTP Requests
                     ArrayList<HTTPSamplerProxy> getreq = new ArrayList<HTTPSamplerProxy>();
-                    
+
                     ArrayList<String> getpath = req.getGetpaths();
                     for(int i=0;i<req.getGetcount();i++)
                     {
@@ -208,13 +208,13 @@ public class JMeterFromScratch {
                     	getreq.add(getsampler);
                     }
                     threadgrp.add(getreq);
-                    
-                    
-                    
+
+
+
                     //Creating All Put HTTP requests
                     ArrayList<HTTPSamplerProxy> putreq = new ArrayList<HTTPSamplerProxy>();
                     ArrayList<String> putpath =req.getPutpaths();
-                  //  ArrayList<String> putbody =allput.getPutbody(); 
+                  //  ArrayList<String> putbody =allput.getPutbody();
                     for(int i=0;i<req.getPutcount();i++)
                     {
                     	HTTPSamplerProxy putsampler =new HTTPSamplerProxy();
@@ -232,7 +232,7 @@ public class JMeterFromScratch {
                     {
                     	HashTree putsamp =threadgrp.add(putreq.get(i),mngr2);
                     }
-                       
+
                     //Creating all Post Requests
                     ArrayList<HTTPSamplerProxy> postreq = new ArrayList<HTTPSamplerProxy>();
                     ArrayList<String> postpath =req.getPostpaths();
@@ -256,8 +256,8 @@ public class JMeterFromScratch {
                     {
                     	HashTree postsamp =threadgrp.add(postreq.get(i),mngr1);
                     }
-                    
-                    
+
+
                   //Creating All DELETE HTTP requests
                     ArrayList<HTTPSamplerProxy> delreq = new ArrayList<HTTPSamplerProxy>();
                     ArrayList<String> delpath =req.getDelpaths();
@@ -279,10 +279,10 @@ public class JMeterFromScratch {
                     {
                     	HashTree delsamp =threadgrp.add(delreq.get(i),mngr1);
                     }
-                    
+
                     break;
-                    
-                    
+
+
                 case 2:
                 	Read scan = new Read();
                     base = scan.genread();
@@ -290,16 +290,16 @@ public class JMeterFromScratch {
                     allpost = scan.postread();
                     allput = scan.putread();
                     alldel = scan.delread();
-                    
+
                     total =allget.getGetcount() + allpost.getPostcount() +allput.getPutcount() +alldel.getDelcount() ;
-                    
-                    if(total ==0) 
+
+                    if(total ==0)
                     {
                     	System.out.println("\nNo HTTP Requests.");
                     	System.out.println("Exiting Application.....\n");
                     	System.exit(0);
                     }
-          
+
                  // Loop Controller
                     LoopController loopController1 = new LoopController();
                     loopController1.setLoops(base.getLoop());
@@ -308,8 +308,8 @@ public class JMeterFromScratch {
                     loopController1.setProperty(TestElement.TEST_CLASS, LoopController.class.getName());
                     loopController1.setProperty(TestElement.GUI_CLASS, LoopControlPanel.class.getName());
                     loopController1.initialize();
-                    
-                    
+
+
                     // Thread Group
                     ThreadGroup threadGroup1 = new ThreadGroup();
                     threadGroup1.setName("Example Thread Group");
@@ -319,7 +319,7 @@ public class JMeterFromScratch {
                     threadGroup1.setProperty(TestElement.TEST_CLASS, ThreadGroup.class.getName());
                     threadGroup1.setProperty(TestElement.GUI_CLASS, ThreadGroupGui.class.getName());
 
-                   
+
                  // Construct Test Plan from previously initialized elements
 
                     // 1st method to initialize subtrees
@@ -329,13 +329,13 @@ public class JMeterFromScratch {
                     testPlanTree.add(testPlan);
                     testPlanTree.add(testPlan, randomVariableConfig);
                     //HashTree del= testPlanTree.add(Sampler7,mngr1);
-                    
+
                     HashTree threadgrp1 =  testPlanTree.add(testPlan,threadGroup1);
-                    
-                    
+
+
                     //Creating All GET HTTP Requests
                     ArrayList<HTTPSamplerProxy> getreq1 = new ArrayList<HTTPSamplerProxy>();
-                    
+
                     ArrayList<String> getpath1 = allget.getGetpaths();
                     for(int i=0;i<allget.getGetcount();i++)
                     {
@@ -351,13 +351,13 @@ public class JMeterFromScratch {
                     	getreq1.add(getsampler1);
                     }
                     threadgrp1.add(getreq1);
-                    
-                    
-                    
+
+
+
                     //Creating All Put HTTP requests
                     ArrayList<HTTPSamplerProxy> putreq1 = new ArrayList<HTTPSamplerProxy>();
                     ArrayList<String> putpath1 =allput.getPutpaths();
-                  //  ArrayList<String> putbody1 =allput.getPutbody(); 
+                  //  ArrayList<String> putbody1 =allput.getPutbody();
                     for(int i=0;i<allput.getPutcount();i++)
                     {
                     	HTTPSamplerProxy putsampler1 =new HTTPSamplerProxy();
@@ -375,9 +375,9 @@ public class JMeterFromScratch {
                     {
                     	HashTree putsamp =threadgrp1.add(putreq1.get(i),mngr2);
                     }
-                       
-             
-                    
+
+
+
                     //Creating all Post Requests
                     ArrayList<HTTPSamplerProxy> postreq1 = new ArrayList<HTTPSamplerProxy>();
                     ArrayList<String> postpath1 =allpost.getPostpaths();
@@ -401,8 +401,8 @@ public class JMeterFromScratch {
                     {
                     	HashTree postsamp =threadgrp1.add(postreq1.get(i),mngr1);
                     }
-                    
-                    
+
+
                   //Creating All DELETE HTTP requests
                     ArrayList<HTTPSamplerProxy> delreq1 = new ArrayList<HTTPSamplerProxy>();
                     ArrayList<String> delpath1 =alldel.getDelpaths();
@@ -465,26 +465,26 @@ public class JMeterFromScratch {
                // String repDir =  "target\\HTMLReport";
                 File htmlFile = new File(repDir + "/index.html");
                 Desktop.getDesktop().browse(htmlFile.toURI());
-                
+
              // moving result obtained in the logs directory
                 Timestamp stamp = new Timestamp(System.currentTimeMillis());
                  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
                  String recent  = sdf.format(stamp);
                 File report = new File("report-output/statistics.json");
-                if(!report.exists()) 
+                if(!report.exists())
                 	{
                 	System.out.println("json result file not created");
                 	}
                 else {
                 	System.out.println("json result file created");
                 }
-                
+
                 File file = new File("logs");
                 if (!file.exists()) {
                     	file.mkdir();
                     }
                 File newFile = new File( file.getPath()+"/"+recent+".json");
-                
+
                 Path result = null;
                 try {
                    result =  Files.move(Paths.get(report.getPath()), Paths.get(newFile.getPath()));
@@ -495,8 +495,8 @@ public class JMeterFromScratch {
                    System.out.println("File moved successfully to logs.");
                 }else{
                    System.out.println("File movement to logs failed .");
-                }  
-                               
+                }
+
                 System.exit(0);
 
             }
