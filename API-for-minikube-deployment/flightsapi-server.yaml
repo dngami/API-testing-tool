@@ -1,0 +1,49 @@
+---
+apiVersion: apps/v1           # API version
+kind: Deployment              # Type of kubernetes resource
+metadata:
+  name: flights-api-server    # Name of the kubernetes resource
+  labels:                     # Labels that will be applied to this resource
+    app: flights-api-server
+spec:
+  replicas: 1                 # No. of replicas/pods to run in this deployment
+  selector:
+    matchLabels:              # The deployment applies to any pods matching the specified labels
+      app: flights-api-server
+  template:                   # Template for creating the pods in this deployment
+    metadata:
+      labels:                 # Labels that will be applied to each Pod in this deployment
+        app: flights-api-server
+    spec:                     # Spec for the containers that will be run in the Pods
+      containers:
+      - name: flights-api-server
+        image: sarthvitekar/updatedspringboot
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8081 # The port that the container exposes
+        resources:
+          limits:
+            cpu: 0.2
+            memory: "200Mi"
+        env:                  # Environment variables supplied to the Pod
+        - name: SPRING_DATASOURCE_URL  # Name of the environment variable
+          value: "jdbc:mysql://flights-api-mysql:3306/flights_schema" 
+        #- name: spring.datasource.password
+        #  value: 22sarthv
+        #- name: spring.datasource.username
+        #  value: sarth
+---
+apiVersion: v1                # API version
+kind: Service                 # Type of the kubernetes resource
+metadata:                     
+  name: flights-api-server    # Name of the kubernetes resource
+  labels:                     # Labels that will be applied to this resource
+    app: flights-api-server
+spec:                         
+  type: NodePort              # The service will be exposed by opening a Port on each node and proxying it. 
+  selector:
+    app: flights-api-server   # The service exposes Pods with label `app=polling-app-server`
+  ports:                      # Forward incoming connections on port 8080 to the target port 8080
+  - port: 9191
+    targetPort: 8081
+    protocol: TCP

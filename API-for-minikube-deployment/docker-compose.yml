@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  mysql-container:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=22sarthv
+      - MYSQL_DATABASE=flights_schema
+      - MYSQL_USER=sarth
+      - MYSQL_PASSWORD=22sarthv
+    volumes:
+      - ./dumps:/docker-entrypoint-initdb.d
+  spring-boot-jpa-app:
+    image: bootspringimage
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql-container
+    ports:
+      - 8080:8080
+    volumes:
+      - /data/spring-boot-app
