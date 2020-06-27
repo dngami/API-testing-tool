@@ -1,0 +1,16 @@
+Domain
+Port       (keep 80 for Default)
+Thread
+Loop
+RampTime 
+No of Get Requests: N
+N line of get request path
+No of Post Requests: M
+1st Post request path
+1st post request body
+same for M times (Path follwed by Body for that Path)
+No of Put Requests: K
+K line of Put request path
+No of Del Requests: L
+L line of Del request path
+ 
